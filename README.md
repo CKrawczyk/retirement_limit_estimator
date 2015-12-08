@@ -42,8 +42,8 @@ tree_tasks = {
 `count_nulls` weather to count "missed" votes on the question in the calculation of information and true probabilities (matched expected values when set to `False`).
 
 ###outputs
-`correctness` an array of shape [N_tasks, num_bootstrap, num_classifications] giving either `0` or `1` indicating if the user got the task correct. `np.nanmean(correctness, axis=2)` is useful for plotting.
+`correctness` an array of shape `[N_tasks, num_bootstrap, num_classifications]` giving either `0` or `1` indicating if the user got the task correct. `np.nanmean(correctness, axis=2)` is useful for plotting.
 
-`info` an array of shape [`N_tasks`, num_bootstrap, num_classifications] giving the amount of information contained in each vote. `np.nanmean(info, axis=2)` is useful for plotting.
+`info` an array of shape `[N_tasks, num_bootstrap, num_classifications]` giving the amount of information contained in each vote. `np.nanmean(info, axis=2)` is useful for plotting.
 
-`true_P`an array of shape [`N_tasks`, num_bootstrap, num_classifications] giving the probability of the correct answer given each vote. `np.nanmean(true_P, axis=2)` is useful for plotting. NOTE: the average of this value over all bootstaps should be the same as the average of correctness over all bootstaps, but the correctness average breaks down for questions deep in the tree due to "null" votes.  This value is the one the retirement should be based on.
+`true_P`an array of shape `[N_tasks, num_bootstrap, num_classifications]` giving the probability of the correct answer given each vote. `np.nanmean(true_P, axis=2)` is useful for plotting. NOTE: the average of this value over all bootstaps should be the same as the average of correctness over all bootstaps, but the correctness average breaks down for questions deep in the tree due to "null" votes.  This value is the one the retirement should be based on.
