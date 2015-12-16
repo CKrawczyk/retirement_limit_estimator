@@ -15,7 +15,7 @@ trees1 = [
 ]
 acc = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
 X = arange(1,101)
-'''
+
 for t in trees1:
     print '=================================='
     print 'tree with {0} answers'.format(len(t[0]))
@@ -89,7 +89,7 @@ for a in acc:
         print '0.95 confident at {0} votes'.format(max(cross))
     else:
         print 'more than 100 votes for 0.95 confidence'
-'''
+
 tree4 = {
     0:[{'next_task': 1}, {'next_task': 2}, {'next_task': 10}],
     1:[{'next_task': 9}, {'next_task': 9}, {'next_task': 9}],

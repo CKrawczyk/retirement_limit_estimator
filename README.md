@@ -47,3 +47,6 @@ tree_tasks = {
 `info` an array of shape `[N_tasks, num_bootstrap, num_classifications]` giving the amount of information contained in each vote. `np.nanmean(info, axis=2)` is useful for plotting.
 
 `true_P`an array of shape `[N_tasks, num_bootstrap, num_classifications]` giving the probability of the correct answer given each vote. `np.nanmean(true_P, axis=2)` is useful for plotting. NOTE: the average of this value over all bootstaps should be the same as the average of correctness over all bootstaps, but the correctness average breaks down for questions deep in the tree due to "null" votes.  This value is the one the retirement should be based on.
+
+#test_trees.py
+A script that uses `expected_information.py` to find the retirement limit for a range of tree shapes and user accuracies.
