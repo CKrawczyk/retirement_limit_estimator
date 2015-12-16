@@ -1,7 +1,9 @@
 import numpy as np
 from operator import itemgetter
 import warnings
+import sys
 warnings.filterwarnings("ignore")
+
 try:
     import progressbar as pb
     pb_installed = True
@@ -189,69 +191,10 @@ def get_priors(tree_tasks):
         priors[k] = np.array([prob_seen[k]/N]*N + [1-prob_seen[k]])
     return priors
 
-if __name__ == '__main__':
-    import matplotlib
-    #matplotlib.use('WXAgg')
+def plot_results(correctness, info, true_P, save_fig=False):
+    from matplotlib import rcParams
     import matplotlib.pyplot as plt
-    #test 1
-    '''
-    tree_tasks = {
-        0:[{'next_task': 1}, {'next_task': 2}, {'next_task': 6}],
-        1:[{'next_task': 3}, {'next_task': 3}],
-        2:[{'next_task': 4}, {'next_task': 5}],
-        3:[{'next_task': 6}, {'next_task': 6}],
-        4:[{'next_task': 6}, {'next_task': 6}],
-        5:[{'next_task': 6}, {'next_task': 6}],
-        6:'end'}
-    '''
-    #test 2
-    '''
-    tree_tasks = {
-        0:[{'next_task': 1}, {'next_task': 2}],
-        1:[{'next_task': 3}, {'next_task': 3}],
-        2:[{'next_task': 3}, {'next_task': 3}],
-        3:'end'}
-    '''
-    #GZ2
-    '''
-    tree_tasks = {
-        0:[{'next_task': 1}, {'next_task': 2}, {'next_task': 10}],
-        1:[{'next_task': 9}, {'next_task': 9}, {'next_task': 9}],
-        2:[{'next_task': 3}, {'next_task': 4}],
-        3:[{'next_task': 9}, {'next_task': 9}, {'next_task': 9}],
-        4:[{'next_task': 5}, {'next_task': 5}],
-        5:[{'next_task': 6}, {'next_task': 8}],
-        6:[{'next_task': 7}, {'next_task': 7}, {'next_task': 7}],
-        7:[{'next_task': 8}, {'next_task': 8}, {'next_task': 8}, {'next_task': 8}, {'next_task': 8}, {'next_task': 8}],
-        8:[{'next_task': 9}, {'next_task': 9}, {'next_task': 9}, {'next_task': 9}],
-        9:[{'next_task': 10}, {'next_task': 10}],
-        10:'end'}
-    '''
-    #GZ CANDELS
 
-    tree_tasks = {
-    0:[{'next_task': 1}, {'next_task': 2}, {'next_task': 17},],
-    1:[{'next_task': 16}, {'next_task': 16}, {'next_task': 16}],
-    2:[{'next_task': 3}, {'next_task': 9}],
-    3:[{'next_task': 7}, {'next_task': 5}, {'next_task': 4}, {'next_task': 4}, {'next_task': 4}, {'next_task': 4}],
-    4:[{'next_task': 5}, {'next_task': 5}, {'next_task': 5}, {'next_task': 5}],
-    5:[{'next_task': 7}, {'next_task': 6}],
-    6:[{'next_task': 7}, {'next_task': 16}],
-    7:[{'next_task': 8}, {'next_task': 8}],
-    8:[{'next_task': 16}, {'next_task': 16}],
-    9:[{'next_task': 10}, {'next_task': 11}],
-    10:[{'next_task': 16}, {'next_task': 16}],
-    11:[{'next_task': 12}, {'next_task': 12}],
-    12:[{'next_task': 13}, {'next_task': 15}],
-    13:[{'next_task': 14}, {'next_task': 14}, {'next_task': 14}],
-    14:[{'next_task': 15}, {'next_task': 15}, {'next_task': 15}, {'next_task': 15}, {'next_task': 15}, {'next_task': 15}],
-    15:[{'next_task': 16}, {'next_task': 16}, {'next_task': 16}],
-    16:[{'next_task': 17}, {'next_task': 17}, {'next_task': 17}, {'next_task': 17}],
-    17:'end'}
-
-    accuracy = 0.5
-    spread = 0.1
-    correctness, info, true_P = simulate(tree_tasks, accuracy=accuracy, spread=spread, num_classifications=100, num_bootstrap=1000, count_nulls=False)
     #==============
     #Plotting stuff
     C = np.nanmean(correctness, axis=2)
@@ -265,7 +208,8 @@ if __name__ == '__main__':
         plt.plot(x, m, color=color, ls='--')
     X = np.arange(1, info.shape[1] + 1)
     colors = list(plt.cm.YlOrRd(np.linspace(50,255,info.shape[0]).astype(int)))[::-1]
-    matplotlib.rcParams['axes.color_cycle'] = colors
+    rcParams['axes.color_cycle'] = colors
+
     plt.figure(1, figsize=(22,8))
     plt.subplot(131)
     plt.hlines(0.95, 0, info.shape[1], linestyles='dashed', colors='k')
@@ -274,6 +218,7 @@ if __name__ == '__main__':
     plt.ylim(0,1)
     plt.xlabel("# classifications")
     plt.ylabel("Correctness (by majority vote)")
+    plt.title(tree)
     plt.legend(['Task {0}'.format(i) for i in range(info.shape[0])], loc=4)
 
     plt.subplot(132)
@@ -295,4 +240,27 @@ if __name__ == '__main__':
     plt.ylabel("P(actual classification | new vote)")
 
     plt.tight_layout()
-    plt.show()
+
+    if save_fig:
+        plt.savefig("expected_information.png")
+    else:
+        plt.show()
+
+    return None
+
+
+if __name__ == '__main__':
+
+    try:
+        tree = sys.argv[1]
+    except IndexError:
+        tree = 'candels'
+    
+    from decision_trees import ei_tree
+    tree_tasks = ei_tree(tree)
+
+    accuracy = 0.5
+    spread = 0.1
+    correctness, info, true_P = simulate(tree_tasks, accuracy=accuracy, spread=spread, num_classifications=100, num_bootstrap=1000, count_nulls=False)
+    plot_results(correctness, info, true_P, save_fig=True)
+
