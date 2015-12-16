@@ -9,8 +9,8 @@ def get_tasks_answers(tree):
 
     trees = ('gz2','candels','test1','test2')
     if tree not in trees:
-        print "Warning: tree {0} not loaded into decision_trees.py".format(tree)
-        print "Available: {0}".format(str(tree))
+        print "\nWarning: tree {0} not loaded into decision_trees.py".format(tree)
+        print "Available: {0}\n".format(str(trees))
         return None,None
 
     else:
@@ -50,8 +50,8 @@ def ei_tree(tree):
 
     tasks,answers = get_tasks_answers(tree)
 
-    tree_tasks = {}
     if tasks != None:
+        tree_tasks = {}
         for t in tasks:
             anslist = tasks[t]
             if type(anslist) == list:
@@ -62,5 +62,7 @@ def ei_tree(tree):
                 assert anslist == 'end', 'String error in decision tree.'
                 tree_tasks[t] = anslist
 
-    return tree_tasks
+        return tree_tasks
+    else:
+        return None
 

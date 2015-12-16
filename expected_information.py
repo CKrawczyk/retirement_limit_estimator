@@ -259,8 +259,9 @@ if __name__ == '__main__':
     from decision_trees import ei_tree
     tree_tasks = ei_tree(tree)
 
-    accuracy = 0.5
-    spread = 0.1
-    correctness, info, true_P = simulate(tree_tasks, accuracy=accuracy, spread=spread, num_classifications=100, num_bootstrap=1000, count_nulls=False)
-    plot_results(correctness, info, true_P, save_fig=True)
+    if tree_tasks != None:
+        accuracy = 0.5
+        spread = 0.1
+        correctness, info, true_P = simulate(tree_tasks, accuracy=accuracy, spread=spread, num_classifications=100, num_bootstrap=1000, count_nulls=False)
+        plot_results(correctness, info, true_P, save_fig=True)
 

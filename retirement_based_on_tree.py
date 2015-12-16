@@ -69,6 +69,7 @@ if __name__ == "__main__":
     Nvotes = 150
     Ntrials = 500
     tasks,answers = get_tasks_answers(tree)
-    vote_fraction, vote_fraction_change, vote_total = run(tasks, answers, Nvotes, Ntrials)
-    plot_results(vote_fraction, vote_fraction_change, vote_total,True)
+    if tasks != None:
+        vote_fraction, vote_fraction_change, vote_total = run(tasks, answers, Nvotes, Ntrials)
+        plot_results(vote_fraction, vote_fraction_change, vote_total,True)
 
