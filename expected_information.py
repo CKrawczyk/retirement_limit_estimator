@@ -9,7 +9,7 @@ try:
     pb_installed = True
     widgets = [pb.Percentage(), pb.Bar(marker='=', left='[', right=']'), ' ', pb.ETA()]
 except:
-    print "a progressbar will not be shown, please install the 'probressbar' package to see one"
+    print "a progressbar will not be shown, please install the 'progressbar' package to see one"
     pb_installed = False
 
 def confusion_matrix(truth):
@@ -53,7 +53,7 @@ class Task:
     def __init__(self, N, actual_classification=None, priors=None, count_nulls=True):
         '''params:
         N - Number of answers to pick from
-        actual_classification - index of the correct answer, when `None` an aswers is picked at random, when `N` none of the answers are correct
+        actual_classification - index of the correct answer, when `None` an answer is picked at random, when `N` none of the answers are correct
             i.e., this branch of the tree is wrong
         '''
         self.count_nulls = count_nulls
@@ -256,8 +256,8 @@ if __name__ == '__main__':
     except IndexError:
         tree = 'candels'
     
-    from decision_trees import ei_tree
-    tree_tasks = ei_tree(tree)
+    from decision_trees import get_decision_tree
+    tree_tasks = get_decision_tree(tree)
 
     if tree_tasks != None:
         accuracy = 0.5
